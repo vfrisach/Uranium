@@ -13,6 +13,7 @@ import UM.i18n  # To translate the "upgrade succeeded" message.
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.MimeTypeDatabase import MimeType
+from UM.PackageManager import PackageManager
 from UM.PluginObject import PluginObject
 from UM.PluginRegistry import PluginRegistry  # To find plug-ins.
 from UM.Resources import Resources  # To load old versions from.
@@ -143,7 +144,7 @@ class VersionUpgradeManager:
     #
     #   \return True if anything was upgraded, or False if it was already up to
     #   date.
-    def upgrade(self) -> bool:
+    def upgrade(self, package_manager: PackageManager) -> bool:
         Logger.log("i", "Looking for old configuration files to upgrade.")
         self._upgrade_tasks.extend(self._getUpgradeTasks())     # Get the initial files to upgrade.
         self._upgrade_routes = self._findShortestUpgradeRoutes()  # Pre-compute the upgrade routes.
@@ -151,9 +152,10 @@ class VersionUpgradeManager:
         upgraded = False  # Did we upgrade something?
         while self._upgrade_tasks:
             upgrade_task = self._upgrade_tasks.popleft()
-            self._upgradeFile(upgrade_task.storage_path, upgrade_task.file_name, upgrade_task.configuration_type)  # Upgrade this file.
+            upgraded = self._upgradeFile(upgrade_task.storage_path, upgrade_task.file_name, upgrade_task.configuration_type)  # Upgrade this file.
             QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
         if upgraded:
+            package_manager.removeDismissedPackages()
             message = UM.Message.Message(text = catalogue.i18nc("@info:version-upgrade", "A configuration from an older version of {0} was imported.", Application.getInstance().getApplicationName()), title = catalogue.i18nc("@info:title", "Version Upgrade"))
             message.show()
         return upgraded

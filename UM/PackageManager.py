@@ -447,6 +447,16 @@ class PackageManager(QObject):
         self._dismissed_packages.add(package_id)
         self._saveManagementData()
 
+    def removeDismissedPackages(self) -> None:
+        Logger.debug("Removing dismissed packages due to version upgrade [%s]" % self.getDismissedPackages())
+        packages_json = os.path.join(Resources.getDataStoragePath(), "packages.json")
+        with open(packages_json) as file_handler:
+            data = json.load(file_handler)  # dict
+        if data.get("dismissed"):
+            data.get("dismissed").clear()
+        with open(cast(str, packages_json), "w", encoding="utf-8") as file_handler:
+            json.dump(data, file_handler, sort_keys=True, indent=4)
+
     ##  Is the package an user installed package?
     def isUserInstalledPackage(self, package_id: str) -> bool:
         return package_id in self._installed_package_dict

@@ -191,7 +191,7 @@ class QtApplication(QApplication, Application):
 
         self.showSplashMessage(i18n_catalog.i18nc("@info:progress", "Updating configuration..."))
         with self._container_registry.lockFile():
-            VersionUpgradeManager.getInstance().upgrade()
+            VersionUpgradeManager.getInstance().upgrade(self._package_manager)
 
         # Load preferences again because before we have loaded the plugins, we don't have the upgrade routine for
         # the preferences file. Now that we have, load the preferences file again so it can be upgraded and loaded.
