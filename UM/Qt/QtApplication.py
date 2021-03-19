@@ -373,7 +373,7 @@ class QtApplication(QApplication, Application):
         if self.checkWindowMinimizedState() and self._tray_icon_widget:
             # NOTE: Qt 5.8 don't support custom icon for the system tray messages, but Qt 5.9 does.
             #       We should use the custom icon when we switch to Qt 5.9
-            self._tray_icon_widget.showMessage(title, message)
+            self._tray_icon_widget.showMessage(title, message, QSystemTrayIcon.Information)
 
     def setMainQml(self, path: str) -> None:
         self._main_qml = path
@@ -384,6 +384,9 @@ class QtApplication(QApplication, Application):
 
     @pyqtSlot()
     def reloadQML(self) -> None:
+
+        print("RELOAD QML")
+
         # only reload when it is a release build
         if not self.getIsDebugMode():
             return
@@ -400,10 +403,14 @@ class QtApplication(QApplication, Application):
     def purgeWindows(self) -> None:
         # Close all root objects except the last one.
         # Should only be called by onComponentCompleted of the mainWindow.
-        if self._qml_engine:
-            for obj in self._qml_engine.rootObjects():
-                if obj != self._qml_engine.rootObjects()[-1]:
-                    obj.close()
+
+        print("PURGE WINDOWS")
+
+        pass
+        # if self._qml_engine:
+        #     for obj in self._qml_engine.rootObjects():
+        #         if obj != self._qml_engine.rootObjects()[-1]:
+        #             obj.close()
 
     @pyqtSlot("QList<QQmlError>")
     def __onQmlWarning(self, warnings: List[QQmlError]) -> None:
@@ -472,11 +479,15 @@ class QtApplication(QApplication, Application):
         return super().event(event)
 
     def windowClosed(self, save_data: bool = True) -> None:
+
+        print("WINDOW CLOSED")
+
+
         Logger.log("d", "Shutting down %s", self.getApplicationName())
         self._is_shutting_down = True
 
-        # garbage collect tray icon so it gets properly closed before the application is closed
-        self._tray_icon_widget = None
+        # # garbage collect tray icon so it gets properly closed before the application is closed
+        # self._tray_icon_widget = None
 
         if save_data:
             try:
@@ -494,8 +505,8 @@ class QtApplication(QApplication, Application):
         except Exception as e:
             Logger.log("e", "Exception while closing backend: %s", repr(e))
 
-        if self._tray_icon_widget:
-            self._tray_icon_widget.deleteLater()
+        # if self._tray_icon_widget:
+        #     self._tray_icon_widget.deleteLater()
 
         self.quit()
 
@@ -595,10 +606,15 @@ class QtApplication(QApplication, Application):
         :param only_selectable:. Set this to False to delete objects from all build plates
         """
 
+        print("DELETE ALL")
+
         self.getController().deleteAllNodesWithMeshData(only_selectable)
 
     @pyqtSlot()
     def resetWorkspace(self) -> None:
+
+        print("RESET WORKSPACE")
+
         self._workspace_metadata_storage.clear()
         self._current_workspace_information.clear()
         self.deleteAll()
@@ -627,6 +643,10 @@ class QtApplication(QApplication, Application):
         This is just to further specify the type of Application.getInstance().
         :return: The instance of this application.
         """
+
+        # if cast(QtApplication, super().getInstance(**kwargs))._is_shutting_down:
+        #     print("CALLED FOR INSTANCE WHILE APP SHUTTING DOWN")
+        #     return None
 
         return cast(QtApplication, super().getInstance(**kwargs))
 
