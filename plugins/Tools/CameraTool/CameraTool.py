@@ -145,10 +145,15 @@ class CameraTool(Tool):
         :param event: event passed from event handler
         :return: type(boolean)
         """
-
-        if MouseEvent.RightButton in event.buttons:  # rightbutton
+        #Dynamical - Cambio el comportamiento. Habilito la rotación con el botón izquierdo
+        # if MouseEvent.RightButton in event.buttons:  # rightbutton
+        #     return True
+        # elif MouseEvent.LeftButton in event.buttons and self._space_is_active is True:  # shift -> leftbutton
+        #     return True
+        # return False
+        if MouseEvent.LeftButton in event.buttons:  # rightbutton
             return True
-        elif MouseEvent.LeftButton in event.buttons and self._space_is_active is True:  # shift -> leftbutton
+        elif MouseEvent.RightButton in event.buttons and self._space_is_active is True:  # shift -> leftbutton
             return True
         return False
 
