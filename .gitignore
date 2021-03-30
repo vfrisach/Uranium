@@ -55,3 +55,4 @@ resources/.DS_Store
 
 #Common plug-ins
 plugins/UraniumExample*Plugin
+.vscode/settings.json
