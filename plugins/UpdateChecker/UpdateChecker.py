@@ -26,7 +26,7 @@ class UpdateChecker(Extension):
         self.setMenuName(i18n_catalog.i18nc("@item:inmenu", "Update Checker"))
         self.addMenuItem(i18n_catalog.i18nc("@item:inmenu", "Check for Updates"), self.checkNewVersion)
 
-        Application.getInstance().getPreferences().addPreference("info/automatic_update_check", True)
+        Application.getInstance().getPreferences().addPreference("info/automatic_update_check", False)
         if Application.getInstance().getPreferences().getValue("info/automatic_update_check"):
             self.checkNewVersion(silent = True, display_same_version = False)
 
