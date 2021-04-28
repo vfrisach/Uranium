@@ -56,3 +56,23 @@ resources/.DS_Store
 #Common plug-ins
 plugins/UraniumExample*Plugin
 .vscode/settings.json
+Uranium.git/config
+Uranium.git/description
+Uranium.git/HEAD
+Uranium.git/packed-refs
+Uranium.git/hooks/applypatch-msg.sample
+Uranium.git/hooks/commit-msg.sample
+Uranium.git/hooks/fsmonitor-watchman.sample
+Uranium.git/hooks/post-update.sample
+Uranium.git/hooks/pre-applypatch.sample
+Uranium.git/hooks/pre-commit.sample
+Uranium.git/hooks/pre-merge-commit.sample
+Uranium.git/hooks/pre-push.sample
+Uranium.git/hooks/pre-rebase.sample
+Uranium.git/hooks/pre-receive.sample
+Uranium.git/hooks/prepare-commit-msg.sample
+Uranium.git/hooks/push-to-checkout.sample
+Uranium.git/hooks/update.sample
+Uranium.git/info/exclude
+Uranium.git/objects/pack/pack-5695cd91e1d44b8fafc303145afd537747d27972.idx
+Uranium.git/objects/pack/pack-5695cd91e1d44b8fafc303145afd537747d27972.pack
